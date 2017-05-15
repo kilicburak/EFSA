@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2010 rel. 3 (x64) (http://www.altova.com) by everis Spain, S.L. (everis Spain, S.L.) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.oecd.org/GHSTS/DomainAggregateComponent-1" xmlns:dac="http://www.oecd.org/GHSTS/DomainAggregateComponent-1" xmlns:cac="http://www.oecd.org/GHSTS/CommonAggregateComponent-1" xmlns:cbc="http://www.oecd.org/GHSTS/CommonBasicComponent-1" targetNamespace="http://www.oecd.org/GHSTS/DomainAggregateComponent-1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="01.04.00">
+	<xs:include schemaLocation="ghsts-domain-picklists.xsd"/>
+	<xs:import namespace="http://www.oecd.org/GHSTS/CommonBasicComponent-1" schemaLocation="./ghsts-CommonBasicComponents_01-04-00.xsd"/>
+	<xs:import namespace="http://www.oecd.org/GHSTS/CommonAggregateComponent-1" schemaLocation="./ghsts-CommonAggregateComponents_01-04-00.xsd"/>
+	<xs:element name="FORMULATION_TYPE" type="FORMULATION_TYPEType"/>
+	<xs:element name="SUBSTANCE_IDENTIFIER" type="SUBSTANCE_IDENTIFIERType"/>
+	<xs:element name="SUBSTANCE_IDENTIFIER_TYPE" type="SUBSTANCE_IDENTIFIER_TYPEType"/>
+	<xs:element name="SUBSTANCE" type="SUBSTANCEType"/>
+	<xs:element name="SUBSTANCES" type="SUBSTANCESType"/>
+	<xs:element name="ORGANISM" type="ORGANISMType"/>
+	<xs:element name="ORGANISMS" type="ORGANISMSType"/>
+	<xs:element name="ORGANISM_IDENTIFIER" type="ORGANISM_IDENTIFIERType"/>
+	<xs:element name="ORGANISM_IDENTIFIER_TYPE" type="ORGANISM_IDENTIFIER_TYPEType"/>
+	<!-- Components definition -->
+	<xs:complexType name="FORMULATION_TYPEType">
+		<xs:sequence>
+			<xs:element name="VALUE" type="EXTENSION_TYPE_FORMULATION_TYPE"/>
+			<xs:element name="VALUE_DECODE" type="cbc:string255"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SUBSTANCE_IDENTIFIERType">
+		<xs:sequence>
+			<xs:element ref="SUBSTANCE_IDENTIFIER_TYPE"/>
+			<xs:element name="IDENTIFIER" type="cbc:string255">
+				<xs:annotation>
+					<xs:documentation>Identifier string</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SUBSTANCE_IDENTIFIER_TYPEType">
+		<xs:sequence>
+			<xs:element name="VALUE" type="EXTENSION_TYPE_SUBSTANCE_IDENTIFIER_TYPE">
+				<xs:annotation>
+					<xs:documentation>Code according restricted picklist TYPE_SUBSTANCE_IDENTIFIER_TYPE; other values are submitted via attribute 'Other_Value'</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="VALUE_DECODE" type="cbc:string255">
+				<xs:annotation>
+					<xs:documentation>Long text of 'Value' or 'Other_Value'</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="SUBSTANCEType">
+		<xs:sequence>
+			<xs:element name="METADATA_STATUS" type="cac:TYPE_METADATA_STATUS_STRUCTType"/>
+			<xs:element name="SUBSTANCE_NAME" type="cbc:string2000">
+				<xs:annotation>
+					<xs:documentation>Common name if available otherwise internal name</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SUBSTANCE_PID" type="cbc:PIDType" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>PID of the pure reference substance. This element is not for the user interface.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="SUBSTANCE_IDENTIFIER" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Eg. CASno, ECNO for pure ingredients</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Id" type="xs:ID" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="SUBSTANCESType">
+		<xs:sequence>
+			<xs:element ref="SUBSTANCE" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Metadata for each referenced substance</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ORGANISMType">
+		<xs:annotation>
+			<xs:documentation>Metadata for each referenced organisms</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="SPECIES" type="cbc:string255">
+				<xs:annotation>
+					<xs:documentation>Species of the organism</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="STRAIN" type="cbc:string255">
+				<xs:annotation>
+					<xs:documentation>Strain of the organism</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="EVENT" type="cbc:string255" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Event of the organism</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ORGANISM_PID" type="cbc:PIDType" minOccurs="0"/>
+			<xs:element ref="ORGANISM_IDENTIFIER" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Identifier of the organism</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Id" type="xs:ID" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="ORGANISMSType">
+		<xs:sequence>
+			<xs:element name="ORGANISM" type="ORGANISMType" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ORGANISM_IDENTIFIERType">
+		<xs:annotation>
+			<xs:documentation>Identifier of the organism</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="ORGANISM_IDENTIFIER_TYPE"/>
+			<xs:element name="IDENTIFIER" type="cbc:string255">
+				<xs:annotation>
+					<xs:documentation>Identifier string</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ORGANISM_IDENTIFIER_TYPEType">
+		<xs:sequence>
+			<xs:element name="VALUE" type="EXTENSION_TYPE_ORGANISM_IDENTIFIER_TYPE">
+				<xs:annotation>
+					<xs:documentation>Code according restricted picklist TYPE_ORGANISM_IDENTIFIER_TYPE; other values are submitted via attribute 'Other_Value'</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="VALUE_DECODE" type="cbc:string255">
+				<xs:annotation>
+					<xs:documentation>Long text of 'Value' or 'Other_Value'</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

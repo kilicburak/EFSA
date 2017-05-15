@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2010 rel. 3 (x64) (http://www.altova.com) by everis Spain, S.L. (everis Spain, S.L.) -->
+<!-- 
+
+VERSION HISTORY
+01.00.00 - initial version (January 2017), created by EFSA for the Food Sector Areas: Feed Additives, GMO, FIP Enzymes and Pesticides.
+	Differences from GHSTS:
+		* Changed cardinality of SUBSTANCES from 1 to 0..1
+		* Changed cardinality of INGREDIENTS from 1 to 0..1
+		* Changed cardinality of FORMULATION from 0..1 to 1..n
+		* Changed cardinality of DOCUMENT_GENERIC from 1 to 0..1
+		* Changed cardinality of INGREDIENT/To_Substance_Id from 1 to 0..1
+
+		* in picklist.xsd: Adding the new open picklist TYPE_INTENDED_USE_TYPE, added values for INTENDED_USE_TYPE element
+		* Added new element INTENDED_USE_TYPE
+
+		* in picklist.xsd: Adding the new open picklist TYPE_CBI_DESIGNATION_FORMAT_TYPE, added values for CBI_DESIGNATION_FORMAT_TYPE element 
+		* Added new element CBI_DESIGNATION_FORMAT_TYPE
+
+		* in picklist.xsd: Adding the new open picklist TYPE_SECTOR_AREA_TYPE, added values for SECTOR_AREA_TYPE element
+		* Added new element SECTOR_AREA_TYPE
+
+		* in picklist.xsd: Adding the new open picklist TYPE_PRODUCT_USE_CLASS_TYPE, added values for PRODUCT_USE_CLASS_TYPE element
+		* Added new element PRODUCT_USE_CLASS_TYPE
+
+		* in picklist.xsd: Adding the new open picklist TYPE_PRODUCT_USE_TYPE, added values for PRODUCT_USE_TYPE element
+		* Added new element PRODUCT_USE_TYPE
+
+		* in picklist.xsd: Adding the new open picklist TYPE_ORGANISM_IDENTIFIER_TYPE, added values for ORGANISM_IDENTIFIER_TYPE element
+		* Added new element ORGANISM_IDENTIFIER_TYPE
+
+		* Added new complex element ORGANISMS with the subelements: SPECIES, STRAIN, EVENT, ORGANISM_IDENTIFIER
+
+		* Added new complex element FORMULATIONS with the subelements: FORMULATION_TYPE, REFERENCED_TO_INGREDIENT
+
+		* Added new complex element PRODUCT_USE with the subelements: PRODUCT_USE_CLASS_TYPE, PRODUCT_USE_TYPE
+
+		* Added new attribute Id in INGREDIENT
+		* Added new attribute To_Organism_Id in INGREDIENT
+
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.oecd.org/GHSTS/Pesticides-1" xmlns:cac="http://www.oecd.org/GHSTS/CommonAggregateComponent-1" xmlns:cbc="http://www.oecd.org/GHSTS/CommonBasicComponent-1" xmlns:dac="http://www.oecd.org/GHSTS/DomainAggregateComponent-1" targetNamespace="http://www.oecd.org/GHSTS/Pesticides-1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="01.04.00">
+	<xs:import namespace="http://www.oecd.org/GHSTS/CommonAggregateComponent-1" schemaLocation="../common/ghsts-CommonAggregateComponents_01-04-00.xsd"/>
+	<xs:import namespace="http://www.oecd.org/GHSTS/CommonBasicComponent-1" schemaLocation="../common/ghsts-CommonBasicComponents_01-04-00.xsd"/>
+	<xs:import namespace="http://www.oecd.org/GHSTS/DomainAggregateComponent-1" schemaLocation="../common/ghsts-DomainAggregateComponents_01-04-00.xsd"/>
+	<xs:include schemaLocation="./ghsts-picklists-FEED-1.xsd"/>
+	<xs:element name="GHSTS-FEED">
+		<xs:annotation>
+			<xs:documentation>Root level structure </xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="PRODUCT">
+					<xs:annotation>
+						<xs:documentation>Metadata of the product</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="METADATA_STATUS" type="cac:TYPE_METADATA_STATUS_STRUCTType"/>
+							<xs:element name="PRODUCT_PID" type="cbc:PIDType">
+								<xs:annotation>
+									<xs:documentation>World wide unique identifier of the product. This element is not for the user interface.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="GENERIC_PRODUCT_NAME" type="cbc:string255">
+								<xs:annotation>
+									<xs:documentation>The generic name (common name or active ingredient): ibuprofen</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="PRODUCT_RA" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>The RA specific fields </xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="PRODUCT_NAME" type="cbc:string2000" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Contains the product name associated with the dossier.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="ADMIN_NUMBER" minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="ADMIN_NUMBER_TYPE">
+														<xs:annotation>
+															<xs:documentation>Represents the type of the Admin Number. </xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="VALUE" type="dac:EXTENSION_TYPE_ADMIN_NUMBER_TYPE">
+																	<xs:annotation>
+																		<xs:documentation>Code according restricted picklist TYPE_ADMIN_NUMBER_TYPE; other values are submitted via attribute 'Other_Value'</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="VALUE_DECODE" type="cbc:string255">
+																	<xs:annotation>
+																		<xs:documentation>Long text of 'Value' or 'Other_Value'</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="IDENTIFIER" type="cbc:string255">
+														<xs:annotation>
+															<xs:documentation>The RA specific identifier of the product.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="To_Specific_for_RA_Id" type="xs:IDREF" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="INGREDIENTS">
+								<xs:annotation>
+									<xs:documentation>List of Ingredients</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="INGREDIENT" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Metadata for each Component</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="QUANTITY" type="xs:decimal" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation/>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="UNIT" minOccurs="0">
+														<xs:annotation>
+															<xs:documentation>Unit of Quantitiy</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="VALUE" type="dac:EXTENSION_TYPE_UNIT">
+																	<xs:annotation>
+																		<xs:documentation>Code according restricted picklist TYPE_UNIT; other values are submitted via attribute 'Other_Value'</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="VALUE_DECODE" type="cbc:string255">
+																	<xs:annotation>
+																		<xs:documentation>Long text of 'Value' or 'Other_Value'</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute name="To_Organism_Id"/>
+												<xs:attribute name="To_Substance_Id" type="xs:IDREF"/>
+												<xs:attribute name="Id" type="xs:ID" use="required"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="DOSSIER">
+								<xs:annotation>
+									<xs:documentation>Metadata for the Dossier-Life Cycle Management</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="DOSSIER_PID" type="cbc:PIDType">
+											<xs:annotation>
+												<xs:documentation>World wide unique identifier for Dossiers. </xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="DOSSIER_DESCRIPTION_TITLE" type="cbc:string2000">
+											<xs:annotation>
+												<xs:documentation>The description of the Dossier self designated by the registrant.</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="DOSSIER_COMP_ID" type="cbc:string20">
+											<xs:annotation>
+												<xs:documentation>Short code for the dossier, starting with a 3-letter company code</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="REFERENCED_DOSSIER" minOccurs="0" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Metadata of the referenced Dossier</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="REFERENCED_DOSSIER_NUMBER" type="cbc:string255">
+														<xs:annotation>
+															<xs:documentation>The reference number (or PID) to the old dossier.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="REFERENCED_DOSSIER_REASON" type="cbc:string2000">
+														<xs:annotation>
+															<xs:documentation>Reason for the reference</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="DOSSIER_RA" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>The RA specific fields </xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="REGULATORY_TYPE">
+														<xs:annotation>
+															<xs:documentation>Legislation, act, regulation or directive under which the submission is made</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="VALUE" type="dac:EXTENSION_TYPE_REGULATORY_TYPE">
+																	<xs:annotation>
+																		<xs:documentation>Code according restricted picklist TYPE_REGULATORY_TYPE; other values are submitted via attribute 'Other_Value'</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="VALUE_DECODE" type="cbc:string255">
+																	<xs:annotation>
+																		<xs:documentation>Long text of 'Value' or 'Other_Value'</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="APPLICATION_TYPE">
+														<xs:annotation>
+															<xs:documentation>Specifies the type of application contained in the dossier. </xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="VALUE" type="dac:EXTENSION_TYPE_APPLICATION_TYPE">
+																	<xs:annotation>
+																		<xs:documentation>Code according restricted picklist TYPE_APPLICATION_TYPE; other values are submitted via attribute 'Other_Value'</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+																<xs:element name="VALUE_DECODE" type="cbc:string255">
+																	<xs:annotation>
+																		<xs:documentation>Long text of 'Value' or 'Other_Value'</xs:documentation>
+																	</xs:annotation>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="PROJECT_ID_NUMBER" type="cbc:string255" minOccurs="0" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>The project identifier(s) assigned by the RA relevant to the dossier.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute name="To_Specific_for_RA_Id" type="xs:IDREF" use="required"/>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="SUBMISSION" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Metadata of Submission</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="SUBMISSION_NUMBER" type="cbc:submissionnumberType">
+														<xs:annotation>
+															<xs:documentation>Identifies the sequence number of the submission inside a dossier.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="SUBMISSION_VERSION_DATE" type="xs:date">
+														<xs:annotation>
+															<xs:documentation>Identifies the date of the submission as defined by the registrant.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="SUBMISSION_TITLE" type="cbc:string2000">
+														<xs:annotation>
+															<xs:documentation>Title of the submission.</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="INCREMENTAL" type="xs:boolean">
+														<xs:annotation>
+															<xs:documentation>Flag of the submission type (full or incremental)</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="PRODUCT_USE" minOccurs="0" maxOccurs="unbounded">
+								<xs:annotation>
+									<xs:documentation>Use of the product, depending on the PRODUCT_USE_CLASS_TYPE.</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="PRODUCT_USE_CLASS_TYPE">
+											<xs:annotation>
+												<xs:documentation>Code used to restrict (to filter) the list of product use type values depending on how the Food Sector Area Regulations request the treatment of the products.</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="VALUE" type="TYPE_PRODUCT_USE_CLASS_TYPE">
+														<xs:annotation>
+															<xs:documentation>Code according restricted picklist TYPE_PRODUCT_USE_CLASS_TYPE; NO other values are allowed</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="VALUE_DECODE" type="cbc:string255">
+														<xs:annotation>
+															<xs:documentation>Long text of 'Value' or 'Other_Value'</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="PRODUCT_USE_TYPE" maxOccurs="unbounded">
+											<xs:annotation>
+												<xs:documentation>Use of the product</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="VALUE" type="EXTENSION_TYPE_PRODUCT_USE_TYPE">
+														<xs:annotation>
+															<xs:documentation>Code according restricted picklist TYPE_PRODUCT_USE_TYPE; other values are submitted via attribute 'Other_Value'</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+													<xs:element name="VALUE_DECODE" type="cbc:string255">
+														<xs:annotation>
+															<xs:documentation>Long text of 'Value' or 'Other_Value'</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="SUBSTANCES" type="dac:SUBSTANCESType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>List of Substances (Ingredients and other referenced substances like metabolites)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ORGANISMS" type="dac:ORGANISMSType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>List of Organisms</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="RECEIVERS" type="cac:RECEIVERSType">
+					<xs:annotation>
+						<xs:documentation>List of RAs (Regulatory Authorities for whom the dossier is being submitted)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="DOCUMENTS" type="cac:DOCUMENTSType">
+					<xs:annotation>
+						<xs:documentation>List of Documents</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="FILES" type="cac:FILESType">
+					<xs:annotation>
+						<xs:documentation>Metadate of a File</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="TOC" type="cac:TOCType">
+					<xs:annotation>
+						<xs:documentation>Table of Content</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="LEGAL_ENTITIES" type="cac:LEGAL_ENTITIESType"/>
+				<xs:element name="USED_TEMPLATES" type="cac:USED_TEMPLATESType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Placeholder for a reference to external XML with overview of all stylesheets required for rendering of embedded XML files. This XML follows a different XSD</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="specificationversion" type="cbc:versionnumberType" use="required"/>
+		</xs:complexType>
+		<!-- Validation of PIDs in submission package -->
+		<xs:key name="KeyFilePID">
+			<xs:selector xpath="./FILES/FILE/FILE_GENERIC"/>
+			<xs:field xpath="FILE_PID"/>
+		</xs:key>
+		<xs:key name="KeyDocumentPID">
+			<xs:selector xpath="./DOCUMENTS/DOCUMENT/DOCUMENT_GENERIC"/>
+			<xs:field xpath="DOCUMENT_PID"/>
+		</xs:key>
+		<!-- Validation of unique FILENAME definition in submission package -->
+		<xs:key name="KeyFileName">
+			<xs:selector xpath="./FILES/FILE/FILE_GENERIC"/>
+			<xs:field xpath="FILENAME"/>
+		</xs:key>
+		<!-- Validation of unique string IDs stored in attributes in submission package -->
+		<!-- version 01.00.01 CR#12: correction of XPATH of key KeyDocumentId-->
+		<xs:key name="KeyDocumentId">
+			<xs:selector xpath="./DOCUMENTS/DOCUMENT"/>
+			<xs:field xpath="@Id"/>
+		</xs:key>
+		<xs:key name="KeyFileId">
+			<xs:selector xpath="./FILES/FILE"/>
+			<xs:field xpath="@Id"/>
+		</xs:key>
+		<xs:key name="KeyIngredientId">
+			<xs:selector xpath="./PRODUCT/INGREDIENTS/INGREDIENT"/>
+			<xs:field xpath="@Id"/>
+		</xs:key>
+		<xs:key name="KeyLegalEntityId">
+			<xs:selector xpath="./LEGAL_ENTITIES/LEGAL_ENTITY"/>
+			<xs:field xpath="@Id"/>
+		</xs:key>
+		<xs:key name="KeyOrganismId">
+			<xs:selector xpath="./ORGANISMS/ORGANISM"/>
+			<xs:field xpath="@Id"/>
+		</xs:key>
+		<xs:key name="KeyReceiverId">
+			<xs:selector xpath="./RECEIVERS/RECEIVER"/>
+			<xs:field xpath="@Id"/>
+		</xs:key>
+		<xs:key name="KeySubstanceId">
+			<xs:selector xpath="./SUBSTANCES/SUBSTANCE"/>
+			<xs:field xpath="@Id"/>
+		</xs:key>
+		<!-- Validation of referential integrity in submission package -->
+		<xs:keyref name="RefIntegrityIngredientToOrganism" refer="KeyOrganismId">
+			<xs:selector xpath="./PRODUCT/INGREDIENTS/INGREDIENT"/>
+			<xs:field xpath="@To_Organism_Id"/>
+		</xs:keyref>
+		<xs:keyref name="RefIntegrityIngredientToSubstance" refer="KeySubstanceId">
+			<xs:selector xpath="./PRODUCT/INGREDIENTS/INGREDIENT"/>
+			<xs:field xpath="@To_Substance_Id"/>
+		</xs:keyref>
+		<xs:keyref name="RefIntegritySenderToLegalentity" refer="KeyLegalEntityId">
+			<xs:selector xpath="./RECEIVERS/RECEIVER/SENDER"/>
+			<xs:field xpath="@To_Legal_Entity_Id"/>
+		</xs:keyref>
+		<xs:keyref name="RefIntegrityReceiverToLegalentity" refer="KeyLegalEntityId">
+			<xs:selector xpath="./RECEIVERS/RECEIVER"/>
+			<xs:field xpath="@To_Legal_Entity_Id"/>
+		</xs:keyref>
+		<xs:keyref name="RefIntegrityProduct_RAToReceiver" refer="KeyReceiverId">
+			<xs:selector xpath="./PRODUCT/PRODUCT_RA"/>
+			<xs:field xpath="@To_Specific_for_RA_Id"/>
+		</xs:keyref>
+		<xs:keyref name="RefIntegrityDossier_RAToReceiver" refer="KeyReceiverId">
+			<xs:selector xpath="./PRODUCT/DOSSIER/DOSSIER_RA"/>
+			<xs:field xpath="@To_Specific_for_RA_Id"/>
+		</xs:keyref>
+		<xs:keyref name="RefIntegrityDocument_RAToReceiver" refer="KeyReceiverId">
+			<xs:selector xpath="./DOCUMENTS/DOCUMENT/DOCUMENT_RA"/>
+			<xs:field xpath="@To_Specific_for_RA_Id"/>
+		</xs:keyref>
+		<xs:keyref name="RefIntegrityFile_RAToReceiver" refer="KeyReceiverId">
+			<xs:selector xpath="./FILES/FILE/FILE_RA"/>
+			<xs:field xpath="@To_Specific_for_RA_Id"/>
+		</xs:keyref>
+		<xs:keyref name="RefIntegrityDocumentToFile" refer="KeyFileId">
+			<xs:selector xpath="./DOCUMENTS/DOCUMENT/DOCUMENT_GENERIC/REFERENCED_TO_FILE"/>
+			<xs:field xpath="@To_File_Id"/>
+		</xs:keyref>
+		<xs:keyref name="RefIntegrityDocumentToSubstance" refer="KeySubstanceId">
+			<xs:selector xpath="./DOCUMENTS/DOCUMENT/DOCUMENT_GENERIC/RELATED_TO_SUBSTANCE"/>
+			<xs:field xpath="@To_Substance_Id"/>
+		</xs:keyref>
+		<xs:keyref name="RefIntegrityDocumentToOrganism" refer="KeyOrganismId">
+			<xs:selector xpath="./DOCUMENTS/DOCUMENT/DOCUMENT_GENERIC/RELATED_TO_ORGANISM"/>
+			<xs:field xpath="@To_Organism_Id"/>
+		</xs:keyref>
+		<xs:keyref name="RefIntegrityTocnodeToDocument" refer="KeyDocumentId">
+			<!-- 01.00.01 - CR#12: correction of xpath to TOC2DOC element -->
+			<xs:selector xpath=".//TOC_NODE/TOC2DOC"/>
+			<xs:field xpath="@To_Document_Id"/>
+		</xs:keyref>
+	</xs:element>
+</xs:schema>

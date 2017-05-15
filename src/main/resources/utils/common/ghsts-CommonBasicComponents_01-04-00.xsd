@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2010 rel. 3 (x64) (http://www.altova.com) by everis Spain, S.L. (everis Spain, S.L.) -->
+<!-- 
+
+VERSION HISTORY
+01.00.00 - initial version (January 2017), created by EFSA for the Food Sector Areas: Feed Additives, GMO, FIP Enzymes and Pesticides.
+	Differences from GHSTS:
+		* Changed cardinality of SUBSTANCES from 1 to 0..1
+		* Changed cardinality of INGREDIENTS from 1 to 0..1
+		* Changed cardinality of FORMULATION from 0..1 to 1..n
+		* Changed cardinality of DOCUMENT_GENERIC from 1 to 0..1
+		* Changed cardinality of INGREDIENT/To_Substance_Id from 1 to 0..1
+
+		* in picklist.xsd: Adding the new open picklist TYPE_INTENDED_USE_TYPE, added values for INTENDED_USE_TYPE element
+		* Added new element INTENDED_USE_TYPE
+
+		* in picklist.xsd: Adding the new open picklist TYPE_CBI_DESIGNATION_FORMAT_TYPE, added values for CBI_DESIGNATION_FORMAT_TYPE element 
+		* Added new element CBI_DESIGNATION_FORMAT_TYPE
+
+		* in picklist.xsd: Adding the new open picklist TYPE_SECTOR_AREA_TYPE, added values for SECTOR_AREA_TYPE element
+		* Added new element SECTOR_AREA_TYPE
+
+		* in picklist.xsd: Adding the new open picklist TYPE_PRODUCT_USE_CLASS_TYPE, added values for PRODUCT_USE_CLASS_TYPE element
+		* Added new element PRODUCT_USE_CLASS_TYPE
+
+		* in picklist.xsd: Adding the new open picklist TYPE_PRODUCT_USE_TYPE, added values for PRODUCT_USE_TYPE element
+		* Added new element PRODUCT_USE_TYPE
+
+		* in picklist.xsd: Adding the new open picklist TYPE_ORGANISM_IDENTIFIER_TYPE, added values for ORGANISM_IDENTIFIER_TYPE element
+		* Added new element ORGANISM_IDENTIFIER_TYPE
+
+		* Added new complex element ORGANISMS with the subelements: SPECIES, STRAIN, EVENT, ORGANISM_IDENTIFIER
+
+		* Added new complex element FORMULATIONS with the subelements: FORMULATION_TYPE, REFERENCED_TO_INGREDIENT
+
+		* Added new complex element PRODUCT_USE with the subelements: PRODUCT_USE_CLASS_TYPE, PRODUCT_USE_TYPE
+
+		* Added new attribute Id in INGREDIENT
+		* Added new attribute To_Organism_Id in INGREDIENT
+
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.oecd.org/GHSTS/CommonBasicComponent-1" xmlns:cbc="http://www.oecd.org/GHSTS/CommonBasicComponent-1" targetNamespace="http://www.oecd.org/GHSTS/CommonBasicComponent-1" elementFormDefault="qualified" attributeFormDefault="unqualified" version="01.04.00">
+	<xs:simpleType name="md5Type">
+		<xs:annotation>
+			<xs:documentation>MD5 checksum definition, used in FILE</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-f,A-F,0-9]{32}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="string20">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="20"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="string255">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="string2000">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="2000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- CR#24: changed type definition from filenamestring to filenamestringType -->
+	<xs:simpleType name="filenamestringType">
+		<xs:annotation>
+			<xs:documentation>definition of relative paths for filenames, used in FILE</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:whiteSpace value="preserve"/>
+			<xs:minLength value="1"/>
+			<xs:maxLength value="230"/>
+			<xs:pattern value="(\.\./)\d{2}/(([a-zA-Z0-9_\-\.]+)/)*([a-zA-Z0-9_\-\.\(\)]+)"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="PIDType">
+		<xs:annotation>
+			<xs:documentation>definition of Persistent Identifier (PID) according to URN pattern as defined in RFC 2141</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:anyURI">
+			<xs:pattern value="urn:[a-zA-Z0-9][a-zA-Z0-9-]{1,31}:([a-zA-Z0-9()+,.:=@;$_!*'-]|%[0-9A-Fa-f]{2})+"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="uuidType">
+		<xs:annotation>
+			<xs:documentation>definition of UUID according to canonical representation</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-f0-9]{8}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{12}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="submissionnumberType">
+		<xs:annotation>
+			<xs:documentation>definition of submission number as two digit number, e.g. 01,02,03 ... to be consistent with name of folder in submission package</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\d{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="versionnumberType">
+		<xs:annotation>
+			<xs:documentation>Version number: six digits, e.g 01.00.00</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\d{2}\.\d{2}\.\d{2}"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>
